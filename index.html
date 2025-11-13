@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Subway Gourmet</title>
+	<style>
+		@font-face {
+    font-family: 'SeoulNamsan';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/SeoulNamsanM.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+}
+		html{height: 100%; font-family: SeoulNamsan;}
+		body{margin: 0;
+		min-height: 100vh;
+		overflow: hidden;
+		}
+		li{list-style-type: none;}
+
+		.title{font-size: 36px;line-height: 1.34; color: ;}
+
+		.flex{display: flex; justify-content: space-between;}
+
+		nav{padding: 32px 44px 18px 44px; display: flex; justify-content: space-between;}
+		.list-lines{font-size: 24px; position: absolute; top:104px; right: 54px; cursor: pointer;}
+		.list-lines li a{text-decoration: none;padding:3px; display: block;}
+		.list-lines li a:hover{font-weight: bold; text-decoration: underline;}
+
+		.line1list{font-size: 38px; line-height: 1.34; padding: 0px 244px 0px 44px; word-break: keep-all; color: ;}
+
+		.line1list span {
+		  margin: 0 4px;
+		  text-decoration: none;
+	      cursor: pointer;}
+		.line1list span:hover {
+		  text-decoration: underline;
+		  text-underline-offset: 8px;}
+
+		.line2list{font-size: 38px; line-height: 1.34; padding: 0px 244px 0px 44px; word-break: keep-all; color: ;}
+
+		.line2list span {
+		  margin: 0 4px;
+		  text-decoration: none;
+	      cursor: pointer;}
+		.line2list span:hover {
+		  text-decoration: underline;
+		  text-underline-offset: 8px;}
+		
+	</style>
+</head>
+<body>
+	<nav>
+		<div class="title">The Gourmet’s Guide to the…</div>
+	</nav>
+
+	<div class="list-lines lines">
+		<li><a><span class="line1" id="lineOne">line 1</span></a></li>
+		<li><a><span class="line2" id="lineTwo">line 2</span></a></li>
+		<li><a><span class="line3" id="lineThree">line 3</span></a></li>
+		<li><a><span class="line4" id="lineFour">line 4</span></a></li>
+		<li><a><span class="line5" id="lineFive">line 5</span></a></li>
+		<li><a><span class="line6" id="lineSix">line 6</span></a></li>
+		<li><a><span class="line7" id="lineSeven">line 7</span></a></li>
+		<li><a><span class="line8" id="lineEight">line 8</span></a></li>
+		<li><a><span class="line9" id="lineNine">line 9</span></a></li>
+	</div>
+
+	<div class="1li" style="display: ;">
+		<div class="line1list">연천 전곡 청산 소요산 동두천 보산 동두천중앙 지행 덕정 덕계 양주 녹양 가능 의정부 회룡 망월사 도봉산 도봉 방학 창동 녹천 월계 광운대 석계 신이문 외대앞 회기 청량리 제기동 신설동 동묘앞 동대문 종로5가 종로3가 종각 시청 서울역 남영 용산 노량진 대방 신길 영등포 신도림 구로 가산디지털단지 독산 금천구청 광명 석수 관악 안양 명학 금정 군포 당정 의왕 성균관대 화서 수원 세류 병점 서동탄 세마 오산대 오산 진위 송탄 서정리 평택지제 평택 성환 직산 두정 천안 봉명 쌍용 아산 탕정 배방 온양온천 신창
+		</div>
+		
+	</div>
+
+
+	<div class="2li" style="display: none;">
+		<div class="line2list" >
+			2호선입니다
+		</div>
+	</div>
+
+	
+
+	<div class="3호선역리스트" style="display: none;">
+		<div class="line3list">
+			3호선입니다
+		</div>
+	</div>
+
+	<div class="4호선역리스트" style="display: none;">
+		<div class="line4list">
+			4호선입니다
+		</div>
+	</div>
+
+	<div class="5호선역리스트" style="display: none;">
+		<div class="line5list">
+			5호선입니다
+		</div>
+	</div>
+
+
+		<script>
+		// --- 'Line 1' 클릭 시 1호선 표시 ---
+  document.getElementById('lineOne').addEventListener('click', () => {
+    document.querySelector('.1li').style.display = 'block';
+    document.querySelector('.2li').style.display = 'none'; // 다른 노선은 숨기기
+  });
+
+  const line1 = document.querySelector('.line1list');
+  const stations = line1.innerText.trim().split(' ');
+  line1.innerHTML = stations.map(st => `<span>${st}</span>`).join(' ');
+
+  const clickSound = new Audio('seoul-up.mp3');
+
+  document.querySelectorAll('.line1list span').forEach(span => {
+    span.addEventListener('click', () => {
+      clickSound.currentTime = 0;
+      clickSound.play();
+    });
+  });
+	</script>
+
+
+		<script>
+	 // --- 'Line 2' 클릭 시 2호선 표시 ---
+  document.getElementById('lineTwo').addEventListener('click', () => {
+    document.querySelector('.2li').style.display = 'block';
+    document.querySelector('.1li').style.display = 'none'; // 다른 노선은 숨기기
+  });
+
+  const line2 = document.querySelector('.line2list');
+  const stations2 = line2.innerText.trim().split(' ');
+  line2.innerHTML = stations2.map(st => `<span>${st}</span>`).join(' ');
+
+  const clickSound2 = new Audio('seoul-up.mp3');
+
+  document.querySelectorAll('.line2list span').forEach(span => {
+    span.addEventListener('click', () => {
+      clickSound2.currentTime = 0;
+      clickSound2.play();
+    });
+  });
+	</script>
+
+</body>
+</html>
