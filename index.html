@@ -32,13 +32,16 @@
 			position: absolute; 
 			bottom:24px; 
 			left: 44px; 
-			cursor: pointer;
+			cursor: none;
 			line-height: 2; 
 			display: flex; 
 			margin: 0 8px;
-			color: #c9caac;}
+			color: #c9caac;
+			opacity: 0.6}
 		.list-lines li a{text-decoration: none;padding:3px; display: block;}
-		.list-lines li a:hover{font-weight: bold; text-decoration: underline;text-underline-offset: 4px; text-underline-color: #c9caac;}
+		.list-lines li a:hover{font-weight: bold;
+  text-underline-offset: 4px;
+  text-decoration: none; /* 밑줄은 JS로 처리 */}
 
 
 		.line1list{
@@ -175,15 +178,15 @@
 	<img src="mark-1.png" class="mark" id="mark1">
 
 	<div class="list-lines lines">
-		<li><a><span id="lineOne" style="margin: 0 8px">line 1</span></a></li>
-		<li><a><span id="lineTwo" style="margin: 0 8px">line 2</span></a></li>
-		<li><a><span id="lineThree" style="margin: 0 8px">line 3</span></a></li>
-		<li><a><span id="lineFour" style="margin: 0 8px">line 4</span></a></li>
-		<li><a><span id="lineFive" style="margin: 0 8px">line 5</span></a></li>
-		<li><a><span id="lineSix" style="margin: 0 8px">line 6</span></a></li>
-		<li><a><span id="lineSeven" style="margin: 0 8px">line 7</span></a></li>
-		<li><a><span id="lineEight" style="margin: 0 8px">line 8</span></a></li>
-		<li><a><span id="lineNine" style="margin: 0 8px">line 9</span></a></li>
+		<li><a><span id="lineOne" style="margin: 0 8px; color: #2657b9">line 1</span></a></li>
+		<li><a><span id="lineTwo" style="margin: 0 8px; color: #00b636">line 2</span></a></li>
+		<li><a><span id="lineThree" style="margin: 0 8px; color: #ff8011">line 3</span></a></li>
+		<li><a><span id="lineFour" style="margin: 0 8px; color: #00b8ee">line 4</span></a></li>
+		<li><a><span id="lineFive" style="margin: 0 8px; color: #9b46e4">line 5</span></a></li>
+		<li><a><span id="lineSix" style="margin: 0 8px; color: #c05700">line 6</span></a></li>
+		<li><a><span id="lineSeven" style="margin: 0 8px; color: #717800">line 7</span></a></li>
+		<li><a><span id="lineEight" style="margin: 0 8px; color: #ff3597">line 8</span></a></li>
+		<li><a><span id="lineNine" style="margin: 0 8px; color: #d5a110">line 9</span></a></li>
 	</div>
 
 	<div class="li1" style="display: none;">
@@ -429,6 +432,19 @@ line1Spans.forEach(span => {
     rightPanel.style.display = "block";
   });
 });
+	//라인버튼 밑줄 색
+	document.querySelectorAll('.list-lines span').forEach(span => {
+	  span.addEventListener('mouseenter', () => {
+	    const color = getComputedStyle(span).color;
+	    span.style.textDecoration = "underline";
+	    span.style.textDecorationColor = color;
+	    span.style.textUnderlineOffset = "6px";
+	  });
+
+	  span.addEventListener('mouseleave', () => {
+	    span.style.textDecoration = "none";
+	  });
+	});
 	</script>
 
 
