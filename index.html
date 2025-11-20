@@ -92,7 +92,7 @@
 
 		#mouse-debug {
     position: fixed;
-    bottom: 24px;
+    bottom: 32px;
     right: 44px;
     font-size: 18px;
     font-family: monospace;
@@ -139,13 +139,13 @@
 
 .panel-close-btn {
   position: absolute;
-  right: 12px;
-  top: 12px;
+  right: 44px;
+  top: 32px;
   font-size: 24px;
   cursor: pointer;
   user-select: none;
   padding: 4px 8px;
-  z-index: 10;
+  z-index: 20;
 }
 .panel-close-btn:hover {
   opacity: 0.6;
@@ -350,15 +350,6 @@
 
 
 		<script>
-			//마우스 이미지
-			document.addEventListener("mousemove", function (e) {
-	  const light = document.getElementById("light");
-	  light.style.left = e.clientX + "px";
-	  light.style.top = e.clientY + "px";
-	});
-		</script>
-
-		<script>
 		// --- 'Line 1' 클릭 시 1호선 표시 ---
   document.getElementById('lineOne').addEventListener('click', () => {
     document.querySelector('.li1').style.display = 'block';
@@ -366,6 +357,7 @@
   });
 
   const clickSound = new Audio('seoul-up.mp3');
+  clickSound.volume = 0.4;   // 🔈 볼륨 줄이기
 
   document.querySelectorAll('.line1list span').forEach(span => {
     span.addEventListener('click', () => {
@@ -404,6 +396,33 @@ line1Spans.forEach(span => {
     moveImage(span);
   });
 });
+</script>
+
+
+		<script>
+	 // --- 'Line 2' 클릭 시 2호선 표시 ---
+  document.getElementById('lineTwo').addEventListener('click', () => {
+    document.querySelector('.li2').style.display = 'block';
+    document.querySelector('.li1').style.display = 'none'; // 다른 노선은 숨기기
+  });
+
+  const line2 = document.querySelector('.line2list');
+  const stations2 = line2.innerText.trim().split(' ');
+  line2.innerHTML = stations2.map(st => `<span>${st}</span>`).join(' ');
+
+  const clickSound2 = new Audio('seoul-up.mp3');
+
+  document.querySelectorAll('.line2list span').forEach(span => {
+    span.addEventListener('click', () => {
+      clickSound2.currentTime = 0;
+      clickSound2.play();
+    });
+  });
+	</script>
+
+<script>
+
+	//1호선 패널
 
 const rightPanel = document.getElementById("rightPanel");
 const panelTitle = document.getElementById("panelTitle");
@@ -432,7 +451,20 @@ line1Spans.forEach(span => {
     rightPanel.style.display = "block";
   });
 });
-	//라인버튼 밑줄 색
+	</script>
+
+<script>
+
+	//공통!!
+
+		//마우스 이미지
+				document.addEventListener("mousemove", function (e) {
+		  const light = document.getElementById("light");
+		  light.style.left = e.clientX + "px";
+		  light.style.top = e.clientY + "px";
+		});
+
+		//라인버튼 밑줄 색
 	document.querySelectorAll('.list-lines span').forEach(span => {
 	  span.addEventListener('mouseenter', () => {
 	    const color = getComputedStyle(span).color;
@@ -445,31 +477,8 @@ line1Spans.forEach(span => {
 	    span.style.textDecoration = "none";
 	  });
 	});
-	</script>
 
-
-		<script>
-	 // --- 'Line 2' 클릭 시 2호선 표시 ---
-  document.getElementById('lineTwo').addEventListener('click', () => {
-    document.querySelector('.li2').style.display = 'block';
-    document.querySelector('.li1').style.display = 'none'; // 다른 노선은 숨기기
-  });
-
-  const line2 = document.querySelector('.line2list');
-  const stations2 = line2.innerText.trim().split(' ');
-  line2.innerHTML = stations2.map(st => `<span>${st}</span>`).join(' ');
-
-  const clickSound2 = new Audio('seoul-up.mp3');
-
-  document.querySelectorAll('.line2list span').forEach(span => {
-    span.addEventListener('click', () => {
-      clickSound2.currentTime = 0;
-      clickSound2.play();
-    });
-  });
-	</script>
-
-	<script>
+		//나중에 지우기-커서위치좌표계 
 (function() {
   const box = document.getElementById("mouse-debug");
   let state = { x: 0, y: 0, moved: false };
