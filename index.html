@@ -93,11 +93,11 @@
 		#mouse-debug {
     position: fixed;
     bottom: 32px;
-    right: 44px;
+    right: 56px;
     font-size: 18px;
     font-family: monospace;
     pointer-events: none; /* 클릭 막음 */
-    z-index: 9999;
+    z-index: 4;
     color: #c9caac;
   }
 
@@ -117,12 +117,13 @@
   width: 22%;
   height: 100vh;
   background:#060802;
-  padding: 34px 44px 0px 0px;
+  padding: 34px 44px 0px 44px;
   overflow-y: auto;
   display: none;   /* 기본은 숨김 */
-  z-index: -3;
+  z-index: 5;
   line-height: 1.58; 
   color: #c9caac;
+  cursor: pointer;
 }
 
 /* 제목 스타일 */
@@ -155,6 +156,83 @@
   max-height: calc(100vh - 120px);  /* 상단 제목 + 닫기 버튼 공간 제외 */
   overflow-y: auto;
 }
+
+.label_text_name{
+	font-size: 24px;
+	position: absolute;
+	bottom: 134px;
+}
+
+.label_input_name{
+	font-family: Yidstreet;
+	font-size: 18px;
+	position: absolute;
+	bottom: 124px;
+	right:44px;
+	background-color: #060802;
+	border: 1px solid #c9caac;
+	transform: translate(0%, -50%);
+	max-width: 46%;
+	color: #c9caac;
+}
+
+.label_text_address{
+	font-size: 24px;
+	position: absolute;
+	bottom: 94px;
+}
+
+.label_input_address{
+	font-family: Yidstreet;
+	font-size: 18px;
+	position: absolute;
+	bottom: 84px;
+	right:44px;
+	background-color: #060802;
+	border: 1px solid #c9caac;
+	transform: translate(0%, -50%);
+	max-width: 46%;
+	color: #c9caac;
+}
+
+.save{
+	font-family: Yidstreet;
+	font-size: 18px;
+	color: #c9caac;
+	position: absolute;
+	bottom: 44px;
+	right:44px;
+	background-color: #060802;
+	border: 1px solid #c9caac;
+	transform: translate(0%, -50%);
+	max-width: 58%;
+}
+.msg{
+	font-family: Yidstreet;
+	font-size: 18px;
+	color: #c9caac;
+	position: absolute;
+	bottom: 57px;
+}
+
+.panel_bg{
+	background-color:#060802;
+}
+
+.panel_title{
+	font-size: 24px;
+	position: absolute;
+	bottom: 180px;
+}
+.panel_name{
+	font-size: 18px;
+	line-height: 1.2;
+}
+.panel_address{
+	font-size: 14px;
+	padding-bottom: 6px;
+	line-height: 1.2;
+}
 		
 	</style>
 </head>
@@ -175,7 +253,7 @@
 	  <div id="panelContent"></div>
 	</div>
 
-	<img src="mark-1.png" class="mark" id="mark1">
+	<img src="mark-01.png" class="mark" id="mark1">
 
 	<div class="list-lines lines">
 		<li><a><span id="lineOne" style="margin: 0 8px; color: #2657b9">line 1</span></a></li>
@@ -357,7 +435,7 @@
   });
 
   const clickSound = new Audio('seoul-up.mp3');
-  clickSound.volume = 0.4;   // 🔈 볼륨 줄이기
+  clickSound.volume = 0.3;   // 🔈 볼륨 줄이기
 
   document.querySelectorAll('.line1list span').forEach(span => {
     span.addEventListener('click', () => {
@@ -421,37 +499,123 @@ line1Spans.forEach(span => {
 	</script>
 
 <script>
+		//1호선 패널
 
-	//1호선 패널
+// 🔥 Apps Script API URL
+const API_URL = "https://script.google.com/macros/s/AKfycbydSFu-KrJ7oaHjVHLvD_zYkNPbJnoqtWJoiTvkX8WtZFULYCMlstEDb8QBlHLO4uw/exec";
 
+// 패널 관련 요소
 const rightPanel = document.getElementById("rightPanel");
 const panelTitle = document.getElementById("panelTitle");
 const panelContent = document.getElementById("panelContent");
 const panelCloseBtn = document.getElementById("panelCloseBtn");
 
-// 패널 닫기 버튼 동작
+// 패널 닫기
 panelCloseBtn.addEventListener("click", () => {
   rightPanel.style.display = "none";
 });
 
-// 1호선 역을 클릭했을 때 패널 열기
+// 🔥 1호선 역 클릭 시 패널 열기 + HTML 삽입 + 이벤트 연결
 line1Spans.forEach(span => {
   span.addEventListener("click", () => {
-    // 패널 제목 = 역 이름
+
+    // 패널 제목을 역 이름으로 설정
     panelTitle.textContent = span.textContent;
 
-    // 패널 내부 내용 (원하는 내용 작성 가능)
+    // 패널 내부에 HTML UI 삽입
     panelContent.innerHTML = `
-      <div>
-        여기에 역 정보 넣기 가능
-      </div>
+      <div class="panel_bg">
+	      <div class="panel_title">For The Next Gourmet</div>
+
+	      <label class="label_text_name">name</label>
+	      <input id="name" type="text" class="label_input_name" placeholder="이름 입력" />
+
+	      <label class="label_text_address">address</label>
+	      <input id="address" type="text" class="label_input_address" placeholder="주소 입력" />
+
+	      <button id="saveBtn" class="save">저장하기</button>
+
+	      <div class="msg" id="msg"></div>
+
+	      <div id="sheetData"></div>
+    	</div>
     `;
 
-    // 패널 표시
+    // 패널 보여주기
     rightPanel.style.display = "block";
+
+    // 버튼 이벤트 다시 연결
+    document.getElementById("saveBtn").addEventListener("click", submitData);
+
+    // 데이터 불러오기
+    loadSheetData();
   });
 });
-	</script>
+
+// 🔥 데이터 저장
+async function submitData() {
+  const name = panelContent.querySelector("#name").value.trim();
+  const address = panelContent.querySelector("#address").value.trim();
+
+  if (!name || !address) {
+    panelContent.querySelector("#msg").innerText = "모든 입력을 채워주세요.";
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("action", "create");
+  formData.append("name", name);
+  formData.append("address", address);
+
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      body: formData
+    });
+
+    const json = await res.json();
+    if (json.status === "success") {
+      document.getElementById("msg").innerText = "데이터 저장 완료!";
+      document.getElementById("name").value = "";
+      document.getElementById("address").value = "";
+
+      loadSheetData(); // 저장 후 갱신
+    } 
+  } catch (err) {
+    document.getElementById("msg").innerText = "요청 실패: " + err;
+  }
+}
+
+// 🔥 데이터 불러오기
+async function loadSheetData() {
+  const container = document.getElementById("sheetData");
+  if (!container) return; // 패널 닫혀있을 때 방지
+
+  const res = await fetch(`${API_URL}?action=read`);
+  const json = await res.json();
+
+  const { rows } = json.data;
+  container.innerHTML = "";
+
+  rows.forEach(row => {
+    let html = "<div class='item'>";
+
+    row.forEach((value, i) => {
+      if (i === 1) {
+        html += `<div class="panel_name">${value}</div><br>`;
+      } else if (i === 2) {
+        html += `<div class="panel_address">${value}</div><br>`;
+      } else {
+        html += `${value}<br>`;
+      }
+    });
+
+    html += "</div>";
+    container.innerHTML += html;
+  });
+}
+</script>
+
 
 <script>
 
