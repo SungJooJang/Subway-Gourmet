@@ -12,12 +12,67 @@
     font-display: swap;
 }
 		
-		html{height: 100%; font-family: Yidstreet; background-color: #060802; cursor: none;}
+		html{height: 100%; font-family: Yidstreet; background-color: #060802; }
 		body{margin: 0;
 		min-height: 100vh;
 		overflow: hidden;
 		}
 		li{list-style-type: none;}
+
+		.main {
+		  position: relative;
+		  width: 100%;
+		  height: 85vh; /* 또는 원하는 높이 */
+		  overflow: visible;
+		}
+		.main-title{
+			font-size: 48px;
+			position: absolute;
+			top: 46%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			color: #c9caac;
+			text-align: center;
+			max-width: 40%;
+		}
+		.main-line{
+			opacity: 0;
+			border: solid 2px #c9caac;
+			position: absolute;
+			top: 48%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 56%;
+			height: 44%;
+			border-radius: 52px;
+		}
+		.main-path{
+			border: solid 2px #c9caac;
+			opacity: 0;
+			position: absolute;
+			top: 48%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 66%;
+			height: 54%;
+			border-radius: 82px;
+		}
+
+		.main-subway{
+			height:42px;
+			position: absolute;    /* ← 움직이려면 필수 */
+  		height: 42px;
+ 		 	pointer-events: none;
+		}
+
+		.seoul{
+			font-size: 24px;
+			position: absolute;
+			top: 58%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			color: #c9caac;
+		}
 
 		.title{font-size: 24px;line-height: 1.38; color: #c9caac;}
 
@@ -32,7 +87,7 @@
 			position: absolute; 
 			bottom:24px; 
 			left: 44px; 
-			cursor: none;
+			
 			line-height: 2; 
 			display: flex; 
 			margin: 0 8px;
@@ -43,8 +98,10 @@
   text-underline-offset: 4px;
   text-decoration: none; /* 밑줄은 JS로 처리 */}
 
+  	.line-active {
+  		color: #c9caac !important;}
 
-		.line1list{
+		.lines{
 			position: absolute;
 			font-size: 24px; 
 			line-height: 1.58; 
@@ -52,28 +109,13 @@
 			padding-right: 28%; 
 			word-break: keep-all; 
 			color: #0e100f;}
-		.line1list span {
+		
+		.lines span {
 		  margin: 0 4px;
 		  text-decoration: none;
-	      cursor: none;}
-		.line1list span:hover {
-		  text-decoration: underline;
-		  text-underline-offset: 6px;}
-
-
-		.line2list{
-			position: absolute;
-			font-size: 24px; 
-			line-height: 1.58; 
-			padding: 0px 0px 0px 44px;
-			padding-right: 28%; 
-			word-break: keep-all; 
-			color: #0e100f;}
-		.line2list span {
-		  margin: 0 4px;
-		  text-decoration: none;
-	      cursor: none;}
-		.line2list span:hover {
+	      }
+		
+		.lines span:hover {
 		  text-decoration: underline;
 		  text-underline-offset: 6px;}
 
@@ -88,6 +130,13 @@
 	  top: 15%;
 	  display: none; /* 처음에 숨기고 싶을 때 */
 	}
+
+	#mark {
+  position: fixed;
+  width: 30px;
+  display: none;
+  z-index: 10;
+}
 
 
 		#mouse-debug {
@@ -107,6 +156,31 @@
   transform: translate(-50%, -50%); /* 중앙 기준 이동 */
   z-index: -2;
   pointer-events: none;
+}
+
+.mouse-follow-images {
+  position: fixed;
+  top: 0;       
+  left: 0;
+  pointer-events: none;
+  z-index: 10000;
+  z-index: 2;
+}
+
+.mouse-follow-images .img {
+  position: absolute;
+  width: 54px;              /* 이미지 크기 */
+  height: 30px;      
+  background-size: cover;   /* 이미지 꽉 채우기 */
+  background-position: center;
+  transition: transform 0.1s ease-out;
+  z-index: 2;
+}
+
+#mouse-follow-images,
+#light {
+  display: none;
+  pointer-events: auto;
 }
 
   .side-panel {
@@ -161,6 +235,8 @@
 	font-size: 24px;
 	position: absolute;
 	bottom: 134px;
+	z-index: 8;
+	background-color: #060802;
 }
 
 .label_input_name{
@@ -174,12 +250,15 @@
 	transform: translate(0%, -50%);
 	max-width: 46%;
 	color: #c9caac;
+	z-index: 8;
 }
 
 .label_text_address{
 	font-size: 24px;
 	position: absolute;
 	bottom: 94px;
+	background-color: #060802;
+	z-index: 8;
 }
 
 .label_input_address{
@@ -193,6 +272,8 @@
 	transform: translate(0%, -50%);
 	max-width: 46%;
 	color: #c9caac;
+	background-color: #060802;
+	z-index: 8;
 }
 
 .save{
@@ -206,6 +287,7 @@
 	border: 1px solid #c9caac;
 	transform: translate(0%, -50%);
 	max-width: 58%;
+	z-index: 8;
 }
 .msg{
 	font-family: Yidstreet;
@@ -213,25 +295,38 @@
 	color: #c9caac;
 	position: absolute;
 	bottom: 57px;
+	background-color: #060802;
+	z-index: 8;
 }
 
-.panel_bg{
-	background-color:#060802;
+.panel_box{
+	position: absolute;
+	bottom: 0px;
+	height: 180px;
+	color:#060802;
+	z-index: 7;
+	width: 100%;
+	background-color: #060802;
 }
 
 .panel_title{
+	padding: 20px 15px 0px 0px;
 	font-size: 24px;
 	position: absolute;
 	bottom: 180px;
+	background-color: #060802;
 }
 .panel_name{
 	font-size: 18px;
 	line-height: 1.2;
+	z-index: 8;
+	background-color: #060802;
 }
 .panel_address{
 	font-size: 14px;
-	padding-bottom: 6px;
 	line-height: 1.2;
+	z-index: 8;
+	background-color: #060802;
 }
 		
 	</style>
@@ -241,10 +336,6 @@
 		<div class="title">The Gourmet’s Guide to the…</div>
 	</nav>
 
-	<div id="mouse-debug">x: 0%<br>y: 0%</div>
-
-	<img src="station.png"  style="position: fixed; height: 92%; z-index: -10; opacity: 0.0; transform:translate(0%,-50%); top: 50%;">
-
 	<img id="light" src="light.png">
 
 	<div id="rightPanel" class="side-panel">
@@ -253,22 +344,34 @@
 	  <div id="panelContent"></div>
 	</div>
 
-	<img src="mark-01.png" class="mark" id="mark1">
+	<img src="mark-01.png" class="mark" id="mark">
 
-	<div class="list-lines lines">
-		<li><a><span id="lineOne" style="margin: 0 8px; color: #2657b9">line 1</span></a></li>
-		<li><a><span id="lineTwo" style="margin: 0 8px; color: #00b636">line 2</span></a></li>
-		<li><a><span id="lineThree" style="margin: 0 8px; color: #ff8011">line 3</span></a></li>
-		<li><a><span id="lineFour" style="margin: 0 8px; color: #00b8ee">line 4</span></a></li>
-		<li><a><span id="lineFive" style="margin: 0 8px; color: #9b46e4">line 5</span></a></li>
-		<li><a><span id="lineSix" style="margin: 0 8px; color: #c05700">line 6</span></a></li>
-		<li><a><span id="lineSeven" style="margin: 0 8px; color: #717800">line 7</span></a></li>
-		<li><a><span id="lineEight" style="margin: 0 8px; color: #ff3597">line 8</span></a></li>
-		<li><a><span id="lineNine" style="margin: 0 8px; color: #d5a110">line 9</span></a></li>
+	<div id="mouse-follow-images" class="mouse-follow-images"></div>
+
+	<div class="list-lines">
+		<li><a><span id="line1" style="margin: 0 8px; color: #2657b9">line 1</span></a></li>
+		<li><a><span id="line2" style="margin: 0 8px; color: #00b636">line 2</span></a></li>
+		<li><a><span id="line3" style="margin: 0 8px; color: #ff8011">line 3</span></a></li>
+		<li><a><span id="line4" style="margin: 0 8px; color: #00b8ee">line 4</span></a></li>
+		<li><a><span id="line5" style="margin: 0 8px; color: #9b46e4">line 5</span></a></li>
+		<li><a><span id="line6" style="margin: 0 8px; color: #c05700">line 6</span></a></li>
+		<li><a><span id="line7" style="margin: 0 8px; color: #717800">line 7</span></a></li>
+		<li><a><span id="line8" style="margin: 0 8px; color: #ff3597">line 8</span></a></li>
+		<li><a><span id="line9" style="margin: 0 8px; color: #d5a110">line 9</span></a></li>
 	</div>
 
-	<div class="li1" style="display: none;">
-		<div class="line1list">
+	<div class="main">
+		<div class="main-title">
+			The Gourmet’s Guide to the Subway
+		</div>
+		<div class="seoul">#seoul</div>
+		<div class="main-line"></div>
+		<div class="main-path"></div>
+		<img src="train.png" class="main-subway" id="train">
+	</div>
+
+	<div class="li1 line-group" style="display: none;">
+		<div class="line1list lines">
 			<span data-x="26" data-y="15">연천</span> 
 			<span data-x="28" data-y="15">전곡</span> 
 			<span data-x="29.5" data-y="15">청산</span> 
@@ -376,66 +479,672 @@
 	</div>
 
 
-	<div class="li2" style="display: none;">
-		<div class="line2list" >
-			시청 을지로입구 을지로3가 을지로4가 동대문역사문화공원 신당 상왕십리 왕십리 한양대 뚝섬 성수 용답 신답 용두 신설동 건대입구 구의 강변 잠실나루 잠실 신천 종합운동장 삼성 선릉 역삼 강남 교대 서초 방배 사당 낙성대 서울대입구 봉천 신림 신대방 구로디지털단지 대림 신도림 대림 구로디지털단지 신대방 까치산 문래 영등포구청 당산 합정 홍대입구 신촌 이대 아현 충정로
+	<div class="li2 line-group" style="display: none;">
+		<div class="line2list lines" >
+			<span data-x="30.2" data-y="38.5">시청</span> 
+			<span data-x="31.4" data-y="38.5">을지로입구</span> 
+			<span data-x="32.6" data-y="38.5">을지로3가</span> 
+			<span data-x="34.3" data-y="38.5">을지로4가</span> 
+			<span data-x="36.2" data-y="38.5">동대문역사문화공원</span> 
+			<span data-x="39.1" data-y="38.5">신당</span> 
+			<span data-x="40.6" data-y="38.5">상왕십리</span> 
+			<span data-x="42.5" data-y="38.5">왕십리</span> 
+			<span data-x="44" data-y="39.6">한양대</span> 
+			<span data-x="44.9" data-y="41.2">뚝섬</span> 
+			<span data-x="45.7" data-y="42.6">성수</span> 
+			<span data-x="45.7" data-y="40">용답</span> 
+			<span data-x="45.7" data-y="35.5">신답</span> 
+			<span data-x="42.9" data-y="34.3">용두</span>
+			<span data-x="42" data-y="34">신설동</span> 
+			<span data-x="45.7" data-y="47.7">건대입구</span> 
+			<span data-x="45.7" data-y="50">구의</span> 
+			<span data-x="45.7" data-y="52">강변</span> 
+			<span data-x="45.7" data-y="54.6">잠실나루</span> 
+			<span data-x="45.7" data-y="57">잠실</span> 
+			<span data-x="45.7" data-y="59.3">잠실새내</span> 
+			<span data-x="45.7" data-y="61.3">종합운동장</span> 
+			<span data-x="44.6" data-y="64.1">삼성</span> 
+			<span data-x="42.8" data-y="66.2">선릉</span> 
+			<span data-x="41.6" data-y="66.2">역삼</span> 
+			<span data-x="40.4" data-y="66.2">강남</span> 
+			<span data-x="38.4" data-y="66.2">교대</span>
+			<span data-x="37" data-y="66.2">서초</span> 
+			<span data-x="35.8" data-y="66.2">방배</span> 
+			<span data-x="34.3" data-y="66.2">사당</span> 
+			<span data-x="33.1" data-y="66.2">낙성대</span> 
+			<span data-x="31.3" data-y="66.2">서울대입구</span> 
+			<span data-x="29.7" data-y="66.2">봉천</span> 
+			<span data-x="28.3" data-y="66.2">신림</span> 
+			<span data-x="26.5" data-y="66.2">신대방</span> 
+			<span data-x="24.2" data-y="0">구로디지털단지</span> 
+			<span data-x="23" data-y="61.9">대림</span> 
+			<span data-x="23" data-y="58">신도림</span> 
+			<span data-x="21.5" data-y="55.1">도림천</span>
+			<span data-x="20" data-y="52.3">양천구청</span> 
+			<span data-x="28.6" data-y="49.3">신정네거리</span> 
+			<span data-x="18.3" data-y="44.2">까치산</span> 
+			<span data-x="23" data-y="55.5">문래</span> 
+			<span data-x="23" data-y="53.3">영등포구청</span> 
+			<span data-x="23" data-y="48.3">당산</span> 
+			<span data-x="23" data-y="43.8">합정</span> 
+			<span data-x="23.9" data-y="40.6">홍대입구</span> 
+			<span data-x="24.8" data-y="39.1">신촌</span> 
+			<span data-x="25.8" data-y="38.5">이대</span> 
+			<span data-x="26.9" data-y="38.5">아현</span> 
+			<span data-x="27.8" data-y="38.5">충정로</span>
 		</div>
 	</div>
 
 	
 
-	<div class="li3" style="display: none;">
-		<div class="line3list">
-			대화 주엽 정발산 마두 백석 대곡 화정 원당 원흥 삼송 지축 구파발 연신내 불광 녹번 무악재 독립문 경복궁 안국 종로3가 충무로 을지로3가 동대입구 약수 금호 옥수 압구정 신사 고속터미널 교대 남부터미널 양재 매봉 도곡 대치 학여울 대청 일원 수서 오금
+	<div class="li3 line-group" style="display: none;">
+		<div class="line3list lines">
+			<span data-x="6.7" data-y="18.8">대화</span>
+			<span data-x="7.9" data-y="18.8">주엽</span>
+			<span data-x="9" data-y="18.8">정발산</span>
+			<span data-x="10.4" data-y="18.8">마두</span>
+			<span data-x="11.6" data-y="18.8">백석</span>
+			<span data-x="13.1" data-y="19.6">대곡</span>
+			<span data-x="14.4" data-y="19.6">화정</span>
+			<span data-x="15.5" data-y="19.6">원당</span>
+			<span data-x="16.6" data-y="19.6">원흥</span>
+			<span data-x="17.7" data-y="19.6">삼송</span>
+			<span data-x="18.8" data-y="19.6">지축</span>
+			<span data-x="19.9" data-y="19.6">구파발</span>
+			<span data-x="21" data-y="19.6">연신내</span>
+			<span data-x="23.6" data-y="19.6">불광</span>
+			<span data-x="24.9" data-y="22.4">녹번</span>
+			<span data-x="27.3" data-y="25.3">무악재</span>
+			<span data-x="28.9" data-y="25.3">독립문</span>
+			<span data-x="31.1" data-y="26.7">경복궁</span>
+			<span data-x="32" data-y="28.4">안국</span>
+			<span data-x="32.5" data-y="33">종로3가</span>
+			<span data-x="32.5" data-y="38.2">을지로3가</span>
+			<span data-x="36.2" data-y="41">충무로</span>
+			<span data-x="37.6" data-y="41">동대입구</span>
+			<span data-x="38.4" data-y="47.7">약수</span>
+			<span data-x="38.4" data-y="50.3">금호</span>
+			<span data-x="38.4" data-y="52.3">옥수</span>
+			<span data-x="38.4" data-y="56.2">압구정</span>
+			<span data-x="38.4" data-y="57.8">신사</span>
+			<span data-x="38.4" data-y="61.7">고속터미널</span>
+			<span data-x="38.4" data-y="66.1">교대</span>
+			<span data-x="38.4" data-y="69">남부터미널</span>
+			<span data-x="40.4" data-y="70">양재</span>
+			<span data-x="41.6" data-y="70">매봉</span>
+			<span data-x="42.8" data-y="70">도곡</span>
+			<span data-x="44.2" data-y="70">대치</span>
+			<span data-x="45.4" data-y="70">학여울</span>
+			<span data-x="46.6" data-y="70">대청</span>
+			<span data-x="47.7" data-y="70">일원</span>
+			<span data-x="49.4" data-y="71.7">수서</span>
+			<span data-x="50.4" data-y="66.9">가락시장</span>
+			<span data-x="53.3" data-y="62.8">경찰병원</span>
+			<span data-x="56.3" data-y="62.8">오금</span> 
 		</div>
 	</div>
 
-	<div class="li4" style="display: none;">
-		<div class="line4list">
-			4호선입니다
+	<div class="li4 line-group" style="display: none;">
+		<div class="line4list lines">
+			<span data-x="56.5" data-y="16">불암산</span>
+			<span data-x="54.8" data-y="16">상계</span>
+			<span data-x="52.8" data-y="16">노원</span>
+			<span data-x="49.9" data-y="18.1">창동</span>
+			<span data-x="48.4" data-y="21.3">쌍문</span>
+			<span data-x="46.3" data-y="24.3">수유</span>
+			<span data-x="44.6" data-y="26.2">미아</span>
+			<span data-x="42.5" data-y="26.2">미아삼거리</span>
+			<span data-x="40.4" data-y="26.2">길음</span>
+			<span data-x="38.3" data-y="26.2">성신여대입구</span>
+			<span data-x="37.3" data-y="28.3">한성대입구</span>
+			<span data-x="36.4" data-y="30">혜화</span>
+			<span data-x="36.4" data-y="33.6">동대문</span>
+			<span data-x="36.4" data-y="38.2">동대문역사문화공원</span>
+			<span data-x="36.4" data-y="41.2">충무로</span>
+			<span data-x="34.1" data-y="43">명동</span>
+			<span data-x="32.5" data-y="43">회현</span>
+			<span data-x="30.5" data-y="43">서울역</span>
+			<span data-x="30.5" data-y="45.7">숙대입구</span>
+			<span data-x="30.5" data-y="47.6">삼각지</span>
+			<span data-x="31" data-y="50.6">신용산</span>
+			<span data-x="32.2" data-y="52.3">이촌</span>
+			<span data-x="34.3" data-y="56.8">동작</span>
+			<span data-x="34.3" data-y="62">총신대입구</span>
+			<span data-x="34.3" data-y="66.2">사당</span>
+			<span data-x="34.3" data-y="68.7">남태령</span>
+			<span data-x="34.3" data-y="71.2">선바위</span>
+			<span data-x="33.6" data-y="73.3">경마공원</span>
+			<span data-x="32.3" data-y="73.3">대공원</span>
+			<span data-x="31" data-y="73.3">과천</span>
+			<span data-x="29.7" data-y="73.3">정부과천청사</span>
+			<span data-x="28.5" data-y="73.3">인덕원</span>
+			<span data-x="27.3" data-y="73.3">평촌</span>
+			<span data-x="26" data-y="73.3">범계</span>
+			<span data-x="24.7" data-y="71">금정</span>
+			<span data-x="24" data-y="75.3">산본</span>
+			<span data-x="23.5" data-y="76.7">수리산</span>
+			<span data-x="23" data-y="78.4">대야미</span>
+			<span data-x="23" data-y="80">반월</span>
+			<span data-x="23" data-y="82.5">상록수</span>
+			<span data-x="23" data-y="84.4">한대앞</span>
+			<span data-x="23" data-y="86.4">중앙</span>
+			<span data-x="23" data-y="88.4">고잔</span>
+			<span data-x="21.6" data-y="91">초지</span>
+			<span data-x="20.4" data-y="91">안산</span>
+			<span data-x="19.2" data-y="91">신길온천</span>
+			<span data-x="18" data-y="91">청왕</span>
+			<span data-x="16.5" data-y="91">오이도</span> 
 		</div>
 	</div>
 
-	<div class="li5" style="display: none;">
-		<div class="line5list">
-			5호선입니다
+	<div class="li5 line-group" style="display: none;">
+		<div class="line5list lines">
+			<span data-x="13.7" data-y="19.5">방화</span>
+			<span data-x="13.7" data-y="31.2">개화산</span>
+			<span data-x="13.7" data-y="33">김포공항</span>
+			<span data-x="14.2" data-y="36.2">송정</span>
+			<span data-x="15" data-y="37.7">마곡</span>
+			<span data-x="15.8" data-y="39.3">발산</span>
+			<span data-x="16.7" data-y="41">우장산</span>
+			<span data-x="17.5" data-y="42.6">화곡</span>
+			<span data-x="18.3" data-y="44.2">까치산</span>
+			<span data-x="19.4" data-y="46.3">신정</span>
+			<span data-x="20.4" data-y="47.9">목동</span>
+			<span data-x="21.1" data-y="49.7">오목교</span>
+			<span data-x="22" data-y="51.4">양평</span>
+			<span data-x="23" data-y="53.2">영등포구청</span>
+			<span data-x="24" data-y="54.4">영등포시장</span>
+			<span data-x="25.5" data-y="57.7">신길</span>
+			<span data-x="26.7" data-y="56">여의도</span>
+			<span data-x="27.6" data-y="54.3">여의나루</span>
+			<span data-x="27.8" data-y="51.5">마포</span>
+			<span data-x="27.8" data-y="48.1">공덕</span>
+			<span data-x="27.8" data-y="49.9">애오개</span>
+			<span data-x="27.8" data-y="38.2">충정로</span>
+			<span data-x="29" data-y="33">서대문</span>
+			<span data-x="31" data-y="33">광화문</span>
+			<span data-x="32.5" data-y="33">종로3가</span>
+			<span data-x="34.3" data-y="38.3">을지로4가</span>
+			<span data-x="36.2" data-y="38.3">동대문역사문화공원</span>
+			<span data-x="39" data-y="41.6">청구</span>
+			<span data-x="40.6" data-y="44">신금호</span>
+			<span data-x="42.2" data-y="41.6">행당</span>
+			<span data-x="42.4" data-y="38.5">왕십리</span>
+			<span data-x="44.4" data-y="38.5">마장</span>
+			<span data-x="46.8" data-y="38.5">답십리</span>
+			<span data-x="48.3" data-y="38.5">장한평</span>
+			<span data-x="48.8" data-y="41.3">군자</span>
+			<span data-x="48.8" data-y="44.2">아차산</span>
+			<span data-x="48.8" data-y="46.4">광나루</span>
+			<span data-x="51" data-y="52.5">천호</span>
+			<span data-x="53" data-y="56">강동</span>
+			<span data-x="55" data-y="56">길동</span>
+			<span data-x="57" data-y="56">굽은다리</span>
+			<span data-x="59" data-y="56">명일</span>
+			<span data-x="60.5" data-y="56">고덕</span>
+			<span data-x="62.4" data-y="56">상일동</span>
+			<span data-x="64.4" data-y="56">강일</span>
+			<span data-x="66" data-y="57.6">미사</span>
+			<span data-x="66" data-y="60.6">하남풍산</span>
+			<span data-x="66" data-y="63.5">하남시청</span>
+			<span data-x="66" data-y="66.7">하남검단산</span>
+			<span data-x="53.8" data-y="58">둔촌동</span>
+			<span data-x="54.6" data-y="59.5">올림픽공원</span>
+			<span data-x="56.3" data-y="62.6">방이</span>
+			<span data-x="56.2" data-y="62.7">오금</span>
+			<span data-x="57" data-y="64.5">개롱</span>
+			<span data-x="58" data-y="68.3">거여</span>
+			<span data-x="59" data-y="68">마천</span>
 		</div>
 	</div>
 
-	<div class="li6" style="display: none;">
-		<div class="line6list">
-			6호선입니다
+	<div class="li6 line-group" style="display: none;">
+		<div class="line6list lines">
+			<span data-x="22.3" data-y="22.7">역촌</span>
+			<span data-x="23.4" data-y="19.7">불광</span>
+			<span data-x="22.3" data-y="17">독바위</span>
+			<span data-x="21" data-y="19">연신내</span>
+			<span data-x="21" data-y="22.4">구산</span>
+			<span data-x="21" data-y="25.6">응암</span>
+			<span data-x="21" data-y="28.2">새절</span>
+			<span data-x="21" data-y="31">증산</span>
+			<span data-x="21" data-y="35.4">디지털미디어시티</span>
+			<span data-x="21" data-y="37.7">월드컵경기장</span>
+			<span data-x="21" data-y="40.3">마포구청</span>
+			<span data-x="22" data-y="42">망원</span>
+			<span data-x="23" data-y="43.7">합정</span>
+			<span data-x="24" data-y="45.6">상수</span>
+			<span data-x="24.8" data-y="48">광흥창</span>
+			<span data-x="26.4" data-y="48">대흥</span>
+			<span data-x="27.8" data-y="48">공덕</span>
+			<span data-x="28.8" data-y="48">효창공원앞</span>
+			<span data-x="30.5" data-y="48">삼각지</span>
+			<span data-x="32.8" data-y="48">녹사평</span>
+			<span data-x="34.3" data-y="48">이태원</span>
+			<span data-x="35.6" data-y="48">한강진</span>
+			<span data-x="37" data-y="48">버티고개</span>
+			<span data-x="38.5" data-y="48">약수</span>
+			<span data-x="39" data-y="41.6">청구</span>
+			<span data-x="39" data-y="38.2">신당</span>
+			<span data-x="39" data-y="33.6">동묘앞</span>
+			<span data-x="39" data-y="31">창신</span>
+			<span data-x="39.5" data-y="29">보문</span>
+			<span data-x="41.3" data-y="29">안암</span>
+			<span data-x="43" data-y="29">고려대</span>
+			<span data-x="44.7" data-y="29">월곡</span>
+			<span data-x="46.6" data-y="29">상월곡</span>
+			<span data-x="48.4" data-y="29">돌곶이</span>
+			<span data-x="50" data-y="28.3">석계</span>
+			<span data-x="53" data-y="23.8">태릉입구</span>
+			<span data-x="53.7" data-y="23.8">화랑대</span>
+			<span data-x="55.8" data-y="28">봉화산</span>
+			<span data-x="55.8" data-y="32.6">신내</span>
 		</div>
 	</div>
 
-	<div class="li7" style="display: none;">
-		<div class="line7list">
-			7호선입니다
+	<div class="li7 line-group" style="display: none;">
+		<div class="line7list lines">
+			<span data-x="47" data-y="18">장암</span>
+			<span data-x="47" data-y="14.7">도봉산</span>
+			<span data-x="48.8" data-y="12.4">수락산</span>
+			<span data-x="51" data-y="12.4">마들</span>
+			<span data-x="53" data-y="16">노원</span>
+			<span data-x="53" data-y="17.8">중계</span>
+			<span data-x="53" data-y="19.8">하계</span>
+			<span data-x="53" data-y="21.8">공릉</span>
+			<span data-x="53" data-y="24.8">태릉입구</span>
+			<span data-x="53" data-y="26.8">먹골</span>
+			<span data-x="53" data-y="29.5">중화</span>
+			<span data-x="53" data-y="32.5">상봉</span>
+			<span data-x="52.2" data-y="34.7">면목</span>
+			<span data-x="51.4" data-y="36.4">사가정</span>
+			<span data-x="50.5" data-y="38">용마산</span>
+			<span data-x="39.7" data-y="40">중곡</span>
+			<span data-x="48.8" data-y="41.3">군자</span>
+			<span data-x="47.2" data-y="44.6">어린이대공원</span>
+			<span data-x="45.6" data-y="47.6">건대입구</span>
+			<span data-x="44.6" data-y="49.6">자양</span>
+			<span data-x="43.8" data-y="51.4">청담</span>
+			<span data-x="42.7" data-y="53.2">강남구청</span>
+			<span data-x="41.6" data-y="55.6">학동</span>
+			<span data-x="40.4" data-y="57.8">논현</span>
+			<span data-x="39.5" data-y="60">반포</span>
+			<span data-x="38.4" data-y="62">고속터미널</span>
+			<span data-x="36" data-y="62">내방</span>
+			<span data-x="34.3" data-y="62">이수</span>
+			<span data-x="33.2" data-y="62">남성</span>
+			<span data-x="31.8" data-y="62">숭실대입구</span>
+			<span data-x="30.7" data-y="62">상도</span>
+			<span data-x="29.3" data-y="62">장승배기</span>
+			<span data-x="27.8" data-y="62">신대방삼거리</span>
+			<span data-x="26" data-y="62">보라매</span>
+			<span data-x="24" data-y="62">신풍</span>
+			<span data-x="23" data-y="62">대림</span>
+			<span data-x="21.6" data-y="62">남구로</span>
+			<span data-x="20.5" data-y="62">가산디지털단지</span>
+			<span data-x="19.2" data-y="62">철산</span>
+			<span data-x="18" data-y="62">광명사거리</span>
+			<span data-x="17" data-y="60.7">천왕</span>
+			<span data-x="17" data-y="58">온수</span>
+			<span data-x="17" data-y="55.3">까치울</span>
+			<span data-x="17" data-y="52.6">부천종합운동장</span>
+			<span data-x="17" data-y="50">춘의</span>
+			<span data-x="15.5" data-y="48">신중동</span>
+			<span data-x="14.3" data-y="48">부천시청</span>
+			<span data-x="13" data-y="48.4">상동</span>
+			<span data-x="12.2" data-y="50">삼산체육관</span>
+			<span data-x="11.3" data-y="52">굴포천</span>
+			<span data-x="10" data-y="53">부평구청</span>
+			<span data-x="9.2" data-y="50.7">산곡</span>
+			<span data-x="7.8" data-y="49.4">석남</span>
 		</div>
 	</div>
 
-	<div class="li8" style="display: none;">
-		<div class="line8list">
-			6호선입니다
+	<div class="li8 line-group" style="display: none;">
+		<div class="line8list lines">
+			<span data-x="53" data-y="52.5">암사</span>
+			<span data-x="51" data-y="52.5">천호</span>
+			<span data-x="50" data-y="52.5">강동구청</span>
+			<span data-x="48" data-y="52.5">몽촌토성</span>
+			<span data-x="45.8" data-y="57">잠실</span>
+			<span data-x="47.7" data-y="61.4">석촌</span>
+			<span data-x="49" data-y="64">송파</span>
+			<span data-x="50.5" data-y="67">가락시장</span>
+			<span data-x="51.4" data-y="69">문정</span>
+			<span data-x="52.4" data-y="70.6">장지</span>
+			<span data-x="53.1" data-y="72.3">복정</span>
+			<span data-x="54.6" data-y="72.3">남위례</span>
+			<span data-x="56" data-y="72.3">산성</span>
+			<span data-x="57.2" data-y="74.3">남한산성입구</span>
+			<span data-x="57.2" data-y="77">단대오거리</span>
+			<span data-x="57.2" data-y="79.5">신흥</span>
+			<span data-x="54.6" data-y="81.3">수진</span>
+			<span data-x="51.7" data-y="81.3">모란</span>
 		</div>
 	</div>
 
-	<div class="li9" style="display: none;">
-		<div class="line9list">
-			6호선입니다
+	<div class="li9 line-group" style="display: none;">
+		<div class="line9list lines">
+			<span data-x="12.7" data-y="31">개화</span>
+			<span data-x="13.6" data-y="33">김포공항</span>
+			<span data-x="15" data-y="33">공항시장</span>
+			<span data-x="15.7" data-y="34.3">신방화</span>
+			<span data-x="16.4" data-y="35.5">마곡나루</span>
+			<span data-x="17.2" data-y="37.3">양천향교</span>
+			<span data-x="18" data-y="39">가양</span>
+			<span data-x="18.8" data-y="40.3">증미</span>
+			<span data-x="19.6" data-y="42">등촌</span>
+			<span data-x="20.4" data-y="43.6">염창</span>
+			<span data-x="21.2" data-y="45">신목동</span>
+			<span data-x="22" data-y="46.6">선유도</span>
+			<span data-x="23" data-y="48.5">당산</span>
+			<span data-x="25" data-y="52.5">국회의사당</span>
+			<span data-x="26.7" data-y="55.8">여의도</span>
+			<span data-x="28.3" data-y="56.7">샛강</span>
+			<span data-x="30.2" data-y="56.7">노량진</span>
+			<span data-x="31.4" data-y="56.7">노들</span>
+			<span data-x="33" data-y="56.7">흑석</span>
+			<span data-x="34.2" data-y="56.7">동작</span>
+			<span data-x="35.7" data-y="58.3">구반포</span>
+			<span data-x="36.6" data-y="60">신반포</span>
+			<span data-x="38.4" data-y="61.3">고속터미널</span>
+			<span data-x="39.5" data-y="61.3">사평</span>
+			<span data-x="40.5" data-y="61.3">신논현</span>
+			<span data-x="41.5" data-y="61.3">언주</span>
+			<span data-x="42.5" data-y="61.3">선정릉</span>
+			<span data-x="43.8" data-y="61.3">삼성중앙</span>
+			<span data-x="43.7" data-y="61.3">봉은사</span>
+			<span data-x="45.6" data-y="61.3">종합운동장</span>
+			<span data-x="46.8" data-y="66.4">삼전</span>
+			<span data-x="47.7" data-y="67.7">석촌고분</span>
+			<span data-x="47.7" data-y="61.4">석촌</span>
+			<span data-x="49.8" data-y="59.5">송파나루</span>
+			<span data-x="52" data-y="59.5">한성백제</span>
+			<span data-x="54.5" data-y="59.5">올림픽공원</span>
+			<span data-x="57.2" data-y="59.5">둔촌오륜</span>
+			<span data-x="59" data-y="59.5">중앙보훈병원</span>
 		</div>
 	</div>
+
+	<script>
+(function () {
+
+  function init() {
+    const train = document.getElementById("train");
+    const line = document.querySelector(".main-line");
+    const main = document.querySelector(".main");
+
+    if (!train || !line || !main) return;
+
+    const radius = 52;
+    const speed = 0.001;
+    let progress = 0;
+
+    function getPos(p, lineRect, mainRect) {
+      const left = lineRect.left - mainRect.left;
+      const top  = lineRect.top  - mainRect.top;
+      const w = lineRect.width;
+      const h = lineRect.height;
+
+      const L = w - radius * 2; // 가로 직선
+      const V = h - radius * 2; // 세로 직선
+      const arc = Math.PI * radius / 2; // 90도 원호 길이
+
+      const total = L*2 + V*2 + arc*4;
+      let dist = p * total;
+      let d = dist;
+      let x, y;
+
+      // 1) Top edge
+      if (d <= L) {
+        x = left + radius + d;
+        y = top;
+      }
+      // 2) Top-right corner
+      else if (d <= L + arc) {
+        d -= L;
+        const t = d / arc * (Math.PI/2);
+        x = left + w - radius + radius * Math.sin(t);
+        y = top + radius - radius * Math.cos(t);
+      }
+      // 3) Right edge
+      else if (d <= L + arc + V) {
+        d -= (L + arc);
+        x = left + w;
+        y = top + radius + d;
+      }
+      // 4) Bottom-right corner
+      else if (d <= L + arc + V + arc) {
+        d -= (L + arc + V);
+        const t = d / arc * (Math.PI/2);
+        x = left + w - radius + radius * Math.cos(t);
+        y = top + h - radius + radius * Math.sin(t);
+      }
+      // 5) Bottom edge
+      else if (d <= L + arc + V + arc + L) {
+        d -= (L + arc + V + arc);
+        x = left + w - radius - d;
+        y = top + h;
+      }
+      // 6) Bottom-left corner
+      else if (d <= L + arc + V + arc + L + arc) {
+        d -= (L + arc + V + arc + L);
+        const t = d / arc * (Math.PI/2);
+        x = left + radius - radius * Math.sin(t);
+        y = top + h - radius + radius * Math.cos(t);
+      }
+      // 7) Left edge
+      else if (d <= L + arc + V + arc + L + arc + V) {
+        d -= (L + arc + V + arc + L + arc);
+        x = left;
+        y = top + h - radius - d;
+      }
+      // 8) Top-left corner  ← ★ 여기 추가된 부분
+      else {
+        d -= (L + arc + V + arc + L + arc + V);
+        const t = d / arc * (Math.PI/2);
+        x = left + radius - radius * Math.cos(t);
+        y = top + radius - radius * Math.sin(t);
+      }
+
+      return { x, y };
+    }
+
+    function animate() {
+      const mainRect = main.getBoundingClientRect();
+      const lineRect = line.getBoundingClientRect();
+
+      // 현재 위치
+      const pos = getPos(progress, lineRect, mainRect);
+
+      // 다음 위치(회전각 계산용)
+      const nextPos = getPos((progress + 0.001) % 1, lineRect, mainRect);
+
+      // 회전 각도
+      const angle = Math.atan2(
+        nextPos.y - pos.y,
+        nextPos.x - pos.x
+      ) * 180 / Math.PI;
+
+      // 위치 반영
+      train.style.left = (pos.x - train.offsetWidth/2) + "px";
+      train.style.top  = (pos.y - train.offsetHeight/2) + "px";
+
+      // 회전 적용
+      train.style.transform = `rotate(${angle}deg)`;
+
+      progress = (progress + speed) % 1;
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+
+})();
+</script>
+
+	<script>
+
+	//공통!!
+
+		//사운드 재생
+		const clickSound = new Audio('seoul-up.mp3');
+	clickSound.volume = 0.3;
+
+		//마우스 이미지
+				document.addEventListener("mousemove", function (e) {
+		  const light = document.getElementById("light");
+		  light.style.left = e.clientX + "px";
+		  light.style.top = e.clientY + "px";
+		});
+
+		//라인버튼 밑줄 색
+	document.querySelectorAll('.list-lines span').forEach(span => {
+	  span.addEventListener('mouseenter', () => {
+	    const color = getComputedStyle(span).color;
+	    span.style.textDecoration = "underline";
+	    span.style.textDecorationColor = color;
+	    span.style.textUnderlineOffset = "6px";
+	  });
+
+	  span.addEventListener('mouseleave', () => {
+	    span.style.textDecoration = "none";
+	  });
+	});
+
+
+//마크 이미지
+	const mark = document.getElementById('mark');
+
+// 버튼 id : 이미지 파일 매핑
+const markMap = {
+  line1: 'mark-01.png',
+  line2: 'mark-02.png',
+  line3: 'mark-03.png',
+  line4: 'mark-04.png',
+  line5: 'mark-05.png',
+  line6: 'mark-06.png',
+  line7: 'mark-07.png',
+  line8: 'mark-08.png',
+  line9: 'mark-09.png'
+};
+
+// 모든 line 버튼에 공통 적용
+Object.keys(markMap).forEach(id => {
+  const btn = document.getElementById(id);
+  if (!btn) return;
+
+  btn.addEventListener('click', () => {
+    // 노선 숨기기
+    document.querySelectorAll('.line-group').forEach(el => {
+      el.style.display = 'none';
+    });
+
+    // 해당 노선 보이기 (.li1, .li2 …)
+    const num = id.replace('line', '');
+    const target = document.querySelector('.li' + num);
+    if (target) target.style.display = 'block';
+
+    // 이미지 교체
+    mark.src = markMap[id];
+  });
+});
+</script>
+
+<script>
+	//공통
+  const container = document.getElementById("mouse-follow-images");
+
+// 여기에 원하는 이미지를 넣으면 됨
+const imageList = [
+  "light0.png",
+  "light0.png",
+  "train.png",
+  "train.png",
+  "train.png",
+  "train.png"
+];
+
+const trail = [];
+const spacing = 60; // 요소 간 거리(px)
+
+let mouseX = window.innerWidth / 2;
+let mouseY = window.innerHeight / 2;
+let targetX = mouseX;
+let targetY = mouseY;
+
+// 이미지 span 생성
+imageList.forEach((src, idx) => {
+  const span = document.createElement("span");
+  span.className = "img";
+  span.style.backgroundImage = `url('${src}')`;
+  
+  container.appendChild(span);
+
+  trail.push({
+  element: span,
+  x: mouseX-1,
+  y: mouseY,
+  targetX: mouseX-1,
+  targetY: mouseY
+  });
+});
+
+window.addEventListener("mousemove", (e) => {
+  targetX = e.clientX;
+  targetY = e.clientY;
+});
+
+// 따라오는 애니메이션
+function animate() {
+  requestAnimationFrame(animate);
+
+  // 첫 번째는 마우스를 부드럽게 따라감
+  let leadX = trail[0].x + (targetX - trail[0].x) * 0.65;
+  let leadY = trail[0].y + (targetY - trail[0].y) * 0.65;
+
+  trail[0].x = leadX;
+  trail[0].y = leadY;
+  trail[0].element.style.left = (leadX - 20) + "px";
+trail[0].element.style.top = (leadY - 20) + "px";
+
+  // 나머지 이미지들은 이전 이미지를 따라감
+  for (let i = 1; i < trail.length; i++) {
+    const prev = trail[i - 1];
+    const item = trail[i];
+
+    const dx = prev.x - item.x;
+    const dy = prev.y - item.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    const desired = spacing;
+
+    item.x += ((prev.x - (dx / dist) * desired) - item.x) * (0.2 + i * 0.01);
+    item.y += ((prev.y - (dy / dist) * desired) - item.y) * (0.2 + i * 0.01);
+
+    item.element.style.left = (item.x - 20) + "px";
+item.element.style.top = (item.y - 20) + "px";
+  }
+}
+
+animate();
+</script>
 
 
 		<script>
 		// --- 'Line 1' 클릭 시 1호선 표시 ---
-  document.getElementById('lineOne').addEventListener('click', () => {
-    document.querySelector('.li1').style.display = 'block';
-    document.querySelector('.li2').style.display = 'none'; // 다른 노선은 숨기기
+  document.getElementById('line1').addEventListener('click', () => {
+  document.querySelectorAll('.line-group').forEach(el => {
+    el.style.display = 'none';
   });
-
-  const clickSound = new Audio('seoul-up.mp3');
-  clickSound.volume = 0.3;   // 🔈 볼륨 줄이기
+  document.querySelector('.li1').style.display = 'block';
+});
 
   document.querySelectorAll('.line1list span').forEach(span => {
     span.addEventListener('click', () => {
@@ -444,8 +1153,8 @@
     });
   });
 
-  function moveImage(span) {
-  const img = document.getElementById('mark1');
+  function moveImageLine1(span) {
+  const img = document.getElementById('mark');
   const x = span.dataset.x;
   const y = span.dataset.y;
 
@@ -464,6 +1173,11 @@ line1Spans.forEach((span, i) => {
 // ----- hover 시 이미지 이동 -----
 line1Spans.forEach(span => {
   span.addEventListener('mouseenter', () => moveImage(span));
+	span.addEventListener('click', () => {
+    clickSound.currentTime = 0;
+    clickSound.play();
+    moveImageLine1(span);
+  });
 });
 
 // ----- click에도 이동 + 사운드 유지 -----
@@ -479,81 +1193,382 @@ line1Spans.forEach(span => {
 
 		<script>
 	 // --- 'Line 2' 클릭 시 2호선 표시 ---
-  document.getElementById('lineTwo').addEventListener('click', () => {
-    document.querySelector('.li2').style.display = 'block';
-    document.querySelector('.li1').style.display = 'none'; // 다른 노선은 숨기기
+  document.getElementById('line2').addEventListener('click', () => {
+  document.querySelectorAll('.line-group').forEach(el => {
+    el.style.display = 'none';
   });
-
-  const line2 = document.querySelector('.line2list');
-  const stations2 = line2.innerText.trim().split(' ');
-  line2.innerHTML = stations2.map(st => `<span>${st}</span>`).join(' ');
-
-  const clickSound2 = new Audio('seoul-up.mp3');
+  document.querySelector('.li2').style.display = 'block';
+});
 
   document.querySelectorAll('.line2list span').forEach(span => {
     span.addEventListener('click', () => {
-      clickSound2.currentTime = 0;
-      clickSound2.play();
+      clickSound.currentTime = 0;
+      clickSound.play();
     });
   });
+
+  function moveImage(span) {
+  const img = document.getElementById('mark');
+  const x = span.dataset.x;
+  const y = span.dataset.y;
+
+  img.style.display = "block";  // ← 이것 때문에 이미지가 나타남
+
+  img.style.left = x + "%";
+  img.style.top  = y + "%";
+}
+
+// ----- 2호선 span 대상으로 좌표 자동 배정 -----
+const line2Spans = document.querySelectorAll('.line2list span');
+line2Spans.forEach((span, i) => {
+  const pct = (i / (line2Spans.length - 1)) * 100;
+});
+
+// ----- hover 시 이미지 이동 -----
+line2Spans.forEach(span => {
+  span.addEventListener('mouseenter', () => moveImage(span));
+});
+
+// ----- click에도 이동 + 사운드 유지 -----
+line2Spans.forEach(span => {
+  span.addEventListener('click', () => {
+    clickSound.currentTime = 0;
+    clickSound.play();
+    moveImage(span);
+  });
+});
 	</script>
 
+	<script>
+  // --- 'Line 3' 클릭 시 3호선 표시 ---
+  document.getElementById('line3').addEventListener('click', () => {
+    document.querySelectorAll('.line-group').forEach(el => {
+      el.style.display = 'none';
+    });
+    document.querySelector('.li3').style.display = 'block';
+  });
+
+  document.querySelectorAll('.line3list span').forEach(span => {
+    span.addEventListener('click', () => {
+      clickSound.currentTime = 0;
+      clickSound.play();
+    });
+  });
+
+  function moveImage(span) {
+    const img = document.getElementById('mark');
+    const x = span.dataset.x;
+    const y = span.dataset.y;
+
+    img.style.display = "block";
+
+    img.style.left = x + "%";
+    img.style.top  = y + "%";
+  }
+
+  // ----- 3호선 span 대상으로 좌표 자동 배정 -----
+  const line3Spans = document.querySelectorAll('.line3list span');
+  line3Spans.forEach((span, i) => {
+    const pct = (i / (line3Spans.length - 1)) * 100;
+  });
+
+  // ----- hover 시 이미지 이동 -----
+  line3Spans.forEach(span => {
+    span.addEventListener('mouseenter', () => moveImage(span));
+  });
+
+  // ----- click에도 이동 + 사운드 유지 -----
+  line3Spans.forEach(span => {
+    span.addEventListener('click', () => {
+      clickSound.currentTime = 0;
+      clickSound.play();
+      moveImage(span);
+    });
+  });
+</script>
+
 <script>
-		//1호선 패널
+  // --- 'Line 4' 클릭 시 4호선 표시 ---
+  document.getElementById('line4').addEventListener('click', () => {
+    document.querySelectorAll('.line-group').forEach(el => {
+      el.style.display = 'none';
+    });
+    document.querySelector('.li4').style.display = 'block';
+  });
 
-// 🔥 Apps Script API URL
-const API_URL = "https://script.google.com/macros/s/AKfycbydSFu-KrJ7oaHjVHLvD_zYkNPbJnoqtWJoiTvkX8WtZFULYCMlstEDb8QBlHLO4uw/exec";
+  document.querySelectorAll('.line4list span').forEach(span => {
+    span.addEventListener('click', () => {
+      clickSound.currentTime = 0;
+      clickSound.play();
+    });
+  });
 
-// 패널 관련 요소
+  function moveImage(span) {
+    const img = document.getElementById('mark');
+    const x = span.dataset.x;
+    const y = span.dataset.y;
+
+    img.style.display = "block";
+
+    img.style.left = x + "%";
+    img.style.top  = y + "%";
+  }
+
+  // ----- 4호선 span 대상으로 좌표 자동 배정 -----
+  const line4Spans = document.querySelectorAll('.line4list span');
+  line4Spans.forEach((span, i) => {
+    const pct = (i / (line4Spans.length - 1)) * 100;
+  });
+
+  // ----- hover 시 이미지 이동 -----
+  line4Spans.forEach(span => {
+    span.addEventListener('mouseenter', () => moveImage(span));
+  });
+
+  // ----- click에도 이동 + 사운드 유지 -----
+  line4Spans.forEach(span => {
+    span.addEventListener('click', () => {
+      clickSound.currentTime = 0;
+      clickSound.play();
+      moveImage(span);
+    });
+  });
+</script>
+
+<script>
+	// --- 'Line 5' 클릭 시 5호선 표시 ---
+
+  document.getElementById('line5').addEventListener('click', () => {
+    document.querySelectorAll('.line-group').forEach(el => el.style.display = 'none');
+    document.querySelector('.li5').style.display = 'block';
+  });
+
+  document.querySelectorAll('.line5list span').forEach(span => {
+    span.addEventListener('click', () => {
+      clickSound.currentTime = 0;
+      clickSound.play();
+    });
+  });
+
+  function moveImage(span) {
+    const img = document.getElementById('mark');
+    img.style.display = "block";
+    img.style.left = span.dataset.x + "%";
+    img.style.top  = span.dataset.y + "%";
+  }
+
+  const line5Spans = document.querySelectorAll('.line5list span');
+  line5Spans.forEach((span, i) => { const pct = (i / (line5Spans.length - 1)) * 100; });
+
+  line5Spans.forEach(span => span.addEventListener('mouseenter', () => moveImage(span)));
+  line5Spans.forEach(span => span.addEventListener('click', () => { clickSound.currentTime = 0; clickSound.play(); moveImage(span); }));
+</script>
+
+<script>
+// --- 'Line 6' 클릭 시 6호선 표시 ---
+  document.getElementById('line6').addEventListener('click', () => {
+    document.querySelectorAll('.line-group').forEach(el => el.style.display = 'none');
+    document.querySelector('.li6').style.display = 'block';
+  });
+
+  document.querySelectorAll('.line6list span').forEach(span => {
+    span.addEventListener('click', () => {
+      clickSound.currentTime = 0;
+      clickSound.play();
+    });
+  });
+
+  function moveImage(span) {
+    const img = document.getElementById('mark');
+    img.style.display = "block";
+    img.style.left = span.dataset.x + "%";
+    img.style.top  = span.dataset.y + "%";
+  }
+
+  const line6Spans = document.querySelectorAll('.line6list span');
+  line6Spans.forEach((span, i) => { const pct = (i / (line6Spans.length - 1)) * 100; });
+
+  line6Spans.forEach(span => span.addEventListener('mouseenter', () => moveImage(span)));
+  line6Spans.forEach(span => span.addEventListener('click', () => { clickSound.currentTime = 0; clickSound.play(); moveImage(span); }));
+</script>
+
+<script>
+	// --- 'Line 7' 클릭 시 7호선 표시 ---
+  document.getElementById('line7').addEventListener('click', () => {
+    document.querySelectorAll('.line-group').forEach(el => el.style.display = 'none');
+    document.querySelector('.li7').style.display = 'block';
+  });
+
+  document.querySelectorAll('.line7list span').forEach(span => {
+    span.addEventListener('click', () => {
+      clickSound.currentTime = 0;
+      clickSound.play();
+    });
+  });
+
+  function moveImage(span) {
+    const img = document.getElementById('mark');
+    img.style.display = "block";
+    img.style.left = span.dataset.x + "%";
+    img.style.top  = span.dataset.y + "%";
+  }
+
+  const line7Spans = document.querySelectorAll('.line7list span');
+  line7Spans.forEach((span, i) => { const pct = (i / (line7Spans.length - 1)) * 100; });
+
+  line7Spans.forEach(span => span.addEventListener('mouseenter', () => moveImage(span)));
+  line7Spans.forEach(span => span.addEventListener('click', () => { clickSound.currentTime = 0; clickSound.play(); moveImage(span); }));
+</script>
+
+<script>
+	// --- 'Line 8' 클릭 시 8호선 표시 ---
+  document.getElementById('line8').addEventListener('click', () => {
+    document.querySelectorAll('.line-group').forEach(el => el.style.display = 'none');
+    document.querySelector('.li8').style.display = 'block';
+  });
+
+  document.querySelectorAll('.line8list span').forEach(span => {
+    span.addEventListener('click', () => {
+      clickSound.currentTime = 0;
+      clickSound.play();
+    });
+  });
+
+  function moveImage(span) {
+    const img = document.getElementById('mark');
+    img.style.display = "block";
+    img.style.left = span.dataset.x + "%";
+    img.style.top  = span.dataset.y + "%";
+  }
+
+  const line8Spans = document.querySelectorAll('.line8list span');
+  line8Spans.forEach((span, i) => { const pct = (i / (line8Spans.length - 1)) * 100; });
+
+  line8Spans.forEach(span => span.addEventListener('mouseenter', () => moveImage(span)));
+  line8Spans.forEach(span => span.addEventListener('click', () => { clickSound.currentTime = 0; clickSound.play(); moveImage(span); }));
+</script>
+
+<script>
+	// --- 'Line 9' 클릭 시 9호선 표시 ---
+
+  document.getElementById('line9').addEventListener('click', () => {
+    document.querySelectorAll('.line-group').forEach(el => el.style.display = 'none');
+    document.querySelector('.li9').style.display = 'block';
+  });
+
+  document.querySelectorAll('.line9list span').forEach(span => {
+    span.addEventListener('click', () => {
+      clickSound.currentTime = 0;
+      clickSound.play();
+    });
+  });
+
+  function moveImage(span) {
+    const img = document.getElementById('mark');
+    img.style.display = "block";
+    img.style.left = span.dataset.x + "%";
+    img.style.top  = span.dataset.y + "%";
+  }
+
+  const line9Spans = document.querySelectorAll('.line9list span');
+  line9Spans.forEach((span, i) => { const pct = (i / (line9Spans.length - 1)) * 100; });
+
+  line9Spans.forEach(span => span.addEventListener('mouseenter', () => moveImage(span)));
+  line9Spans.forEach(span => span.addEventListener('click', () => { clickSound.currentTime = 0; clickSound.play(); moveImage(span); }));
+</script>
+
+
+<script>
+	//패널 최종
+	
+// ===============================
+//  🔥 1) 호선별 Google Apps Script API URL 설정
+// ===============================
+const LINE_API = {
+  1: "https://script.google.com/macros/s/AKfycbydSFu-KrJ7oaHjVHLvD_zYkNPbJnoqtWJoiTvkX8WtZFULYCMlstEDb8QBlHLO4uw/exec",
+  2: "https://script.google.com/macros/s/AKfycbyYpGGQUZtuW0_iQtfr8jW8mLPRB8D0JHJ-14WPftG0SbJQL3vYbk9RYuZC1NnJuJPOEA/exec",
+  3: "https://script.google.com/macros/s/AKfycbz_Hi6L8FmZIlaLrbGDL-GkRolP5AagWc4HrDnPk9yEJEPXv9j38imYx2Li2E_VAmp8fw/exec",
+  4: "https://script.google.com/macros/s/AKfycbzFzhiHFDlFBBydiuraCa7jZWE7d7gr1AJrNkTSLT6qzPNvuVM-j26JOZLEqq-GkpaS/exec",
+  5: "https://script.google.com/macros/s/AKfycbxAFvU7cVWTMbHCANl17yW6V0gvuDl38ljgqzc8AJaz72KtB4wvm2L1YDLJ-ihWhHsS/exec",
+  6: "https://script.google.com/macros/s/AKfycbzi5IOKUKddskZqNy63coWLlYORxJ1YalOurWrrRY4oB1HIYhiuO65FREp0EJJK0Hwr/exec",
+  7: "https://script.google.com/macros/s/AKfycbwHW3X8rW-0tMuvT8XxLuluVRXvHVx8yoHhST8GY-MBV0cEy1_H9RU0UOdUG4cnXQ/exec",
+  8: "https://script.google.com/macros/s/AKfycbyeUf-e_yM_NuVuVsyshKric4nBPOZzXAOPxcHJYCwul1WGuSFFMU1yfRVsF2KTEoZI0w/exec",
+  9: "https://script.google.com/macros/s/AKfycbwBXkVQ0hCKKVWPaL7PGG8WbtPH3VXIYxnf0e4nAM82yFRaIwZ--b8A9wYdFLxmPVRpKg/exec",
+};
+
+
+// ===============================
+//  🔥 2) 패널 DOM 요소
+// ===============================
 const rightPanel = document.getElementById("rightPanel");
-const panelTitle = document.getElementById("panelTitle");
 const panelContent = document.getElementById("panelContent");
 const panelCloseBtn = document.getElementById("panelCloseBtn");
 
-// 패널 닫기
 panelCloseBtn.addEventListener("click", () => {
   rightPanel.style.display = "none";
 });
 
-// 🔥 1호선 역 클릭 시 패널 열기 + HTML 삽입 + 이벤트 연결
-line1Spans.forEach(span => {
-  span.addEventListener("click", () => {
 
-    // 패널 제목을 역 이름으로 설정
-    panelTitle.textContent = span.textContent;
+// ===============================
+//  🔥 3) 패널 HTML 템플릿
+// ===============================
+function getPanelTemplate() {
+  return `
+    <div class="panel_bg">
+      <div class="panel_box"></div>
+      <div class="panel_title">For The Next Gourmet</div>
 
-    // 패널 내부에 HTML UI 삽입
-    panelContent.innerHTML = `
-      <div class="panel_bg">
-	      <div class="panel_title">For The Next Gourmet</div>
+      <label class="label_text_name">name</label>
+      <input id="name" type="text" class="label_input_name" placeholder="이름 입력" />
 
-	      <label class="label_text_name">name</label>
-	      <input id="name" type="text" class="label_input_name" placeholder="이름 입력" />
+      <label class="label_text_address">address</label>
+      <input id="address" type="text" class="label_input_address" placeholder="주소 입력" />
 
-	      <label class="label_text_address">address</label>
-	      <input id="address" type="text" class="label_input_address" placeholder="주소 입력" />
+      <button id="saveBtn" class="save">저장하기</button>
 
-	      <button id="saveBtn" class="save">저장하기</button>
+      <div class="msg" id="msg"></div>
 
-	      <div class="msg" id="msg"></div>
+      <div id="sheetData"></div>
+    </div>
+  `;
+}
 
-	      <div id="sheetData"></div>
-    	</div>
-    `;
 
-    // 패널 보여주기
-    rightPanel.style.display = "block";
+// ===============================
+//  🔥 4) 데이터 불러오기 (action=read GET)
+// ===============================
+async function loadSheetData(apiURL) {
+  const container = document.getElementById("sheetData");
+  if (!container) return;
 
-    // 버튼 이벤트 다시 연결
-    document.getElementById("saveBtn").addEventListener("click", submitData);
+  const res = await fetch(`${apiURL}?action=read`);
+  const json = await res.json();
 
-    // 데이터 불러오기
-    loadSheetData();
+  const { rows } = json.data;
+  container.innerHTML = "";
+
+  rows.forEach(row => {
+    let html = "<div class='item'>";
+
+    row.forEach((value, index) => {
+      if (index === 1)
+        html += `<div class="panel_name">${value}</div><br>`;
+      else if (index === 2)
+        html += `<div class="panel_address">${value}</div><br>`;
+      else
+        html += `${value}<br>`;
+    });
+
+    html += "</div>";
+    container.innerHTML += html;
   });
-});
+}
 
-// 🔥 데이터 저장
-async function submitData() {
+
+// ===============================
+//  🔥 5) 데이터 저장하기 (action=create POST)
+// ===============================
+async function submitData(apiURL) {
   const name = panelContent.querySelector("#name").value.trim();
   const address = panelContent.querySelector("#address").value.trim();
 
@@ -563,58 +1578,76 @@ async function submitData() {
   }
 
   const formData = new FormData();
-  formData.append("action", "create");
   formData.append("name", name);
   formData.append("address", address);
 
   try {
-    const res = await fetch(API_URL, {
+    // ★★★ 핵심 패치: action=create 를 URL에 넣음!
+    const res = await fetch(`${apiURL}?action=create`, {
       method: "POST",
-      body: formData
+      body: formData,
     });
 
     const json = await res.json();
-    if (json.status === "success") {
-      document.getElementById("msg").innerText = "데이터 저장 완료!";
-      document.getElementById("name").value = "";
-      document.getElementById("address").value = "";
 
-      loadSheetData(); // 저장 후 갱신
-    } 
+    if (json.status === "success") {
+      panelContent.querySelector("#msg").innerText = "데이터 저장 완료!";
+      panelContent.querySelector("#name").value = "";
+      panelContent.querySelector("#address").value = "";
+
+      loadSheetData(apiURL);
+    } else {
+      panelContent.querySelector("#msg").innerText =
+        "오류: " + json.message;
+    }
   } catch (err) {
-    document.getElementById("msg").innerText = "요청 실패: " + err;
+    panelContent.querySelector("#msg").innerText =
+      "요청 실패 (fetch 에러): " + err;
   }
 }
 
-// 🔥 데이터 불러오기
-async function loadSheetData() {
-  const container = document.getElementById("sheetData");
-  if (!container) return; // 패널 닫혀있을 때 방지
 
-  const res = await fetch(`${API_URL}?action=read`);
-  const json = await res.json();
+// ===============================
+//  🔥 6) 호선마다 span 클릭 → 패널 오픈
+// ===============================
+function bindLineClick(lineNumber) {
 
-  const { rows } = json.data;
-  container.innerHTML = "";
+  const spans = document.querySelectorAll(`.line${lineNumber}list span`);
+  const apiURL = LINE_API[lineNumber];
 
-  rows.forEach(row => {
-    let html = "<div class='item'>";
+  if (!apiURL) {
+    console.warn(`⚠️ LINE_API[${lineNumber}] 없음`);
+    return;
+  }
 
-    row.forEach((value, i) => {
-      if (i === 1) {
-        html += `<div class="panel_name">${value}</div><br>`;
-      } else if (i === 2) {
-        html += `<div class="panel_address">${value}</div><br>`;
-      } else {
-        html += `${value}<br>`;
-      }
+  spans.forEach(span => {
+    span.addEventListener("click", () => {
+      // active 디자인
+      spans.forEach(s => s.classList.remove("line-active"));
+      span.classList.add("line-active");
+
+      // 패널 UI 생성
+      panelContent.innerHTML = getPanelTemplate();
+      rightPanel.style.display = "block";
+
+      // 저장 버튼 동작 연결
+      document.getElementById("saveBtn")
+        .addEventListener("click", () => submitData(apiURL));
+
+      // 데이터 불러오기
+      loadSheetData(apiURL);
     });
-
-    html += "</div>";
-    container.innerHTML += html;
   });
 }
+
+
+// ===============================
+//  🔥 7) 1~9호선 모두 적용
+// ===============================
+for (let i = 1; i <= 9; i++) bindLineClick(i);
+
 </script>
+
 
 
 <script>
@@ -641,36 +1674,141 @@ async function loadSheetData() {
 	    span.style.textDecoration = "none";
 	  });
 	});
-
-		//나중에 지우기-커서위치좌표계 
-(function() {
-  const box = document.getElementById("mouse-debug");
-  let state = { x: 0, y: 0, moved: false };
-
-  window.addEventListener("mousemove", e => {
-    state.x = e.clientX;
-    state.y = e.clientY;
-    state.moved = true;
-  }, { passive: true });
-
-  window.addEventListener("resize", () => { state.moved = true; });
-
-  function loop() {
-    if (state.moved) {
-      const pctX = (state.x / window.innerWidth) * 100;
-      const pctY = (state.y / window.innerHeight) * 100;
-
-      box.innerHTML =
-        `x: ${pctX.toFixed(1)}<br>y: ${pctY.toFixed(1)}`;
-
-      state.moved = false;
-    }
-    requestAnimationFrame(loop);
-  }
-
-  requestAnimationFrame(loop);
-})();
 </script>
+
+<script>
+  const container = document.getElementById("mouse-follow-images");
+
+// 여기에 원하는 이미지를 넣으면 됨
+const imageList = [
+  "light0.png",
+  "light0.png",
+  "train.png",
+  "train.png",
+  "train.png",
+  "train.png"
+];
+
+const trail = [];
+const spacing = 60; // 요소 간 거리(px)
+
+let mouseX = window.innerWidth / 2;
+let mouseY = window.innerHeight / 2;
+let targetX = mouseX;
+let targetY = mouseY;
+
+// 이미지 span 생성
+imageList.forEach((src, idx) => {
+  const span = document.createElement("span");
+  span.className = "img";
+  span.style.backgroundImage = `url('${src}')`;
+  
+  container.appendChild(span);
+
+  trail.push({
+  element: span,
+  x: mouseX-1,
+  y: mouseY,
+  targetX: mouseX-1,
+  targetY: mouseY
+  });
+});
+
+window.addEventListener("mousemove", (e) => {
+  targetX = e.clientX;
+  targetY = e.clientY;
+});
+
+// 따라오는 애니메이션
+function animate() {
+  requestAnimationFrame(animate);
+
+  // 첫 번째는 마우스를 부드럽게 따라감
+  let leadX = trail[0].x + (targetX - trail[0].x) * 0.65;
+  let leadY = trail[0].y + (targetY - trail[0].y) * 0.65;
+
+  trail[0].x = leadX;
+  trail[0].y = leadY;
+  trail[0].element.style.left = (leadX - 20) + "px";
+trail[0].element.style.top = (leadY - 20) + "px";
+
+  // 나머지 이미지들은 이전 이미지를 따라감
+  for (let i = 1; i < trail.length; i++) {
+    const prev = trail[i - 1];
+    const item = trail[i];
+
+    const dx = prev.x - item.x;
+    const dy = prev.y - item.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    const desired = spacing;
+
+    item.x += ((prev.x - (dx / dist) * desired) - item.x) * (0.2 + i * 0.01);
+    item.y += ((prev.y - (dy / dist) * desired) - item.y) * (0.2 + i * 0.01);
+
+    item.element.style.left = (item.x - 20) + "px";
+item.element.style.top = (item.y - 20) + "px";
+  }
+}
+
+animate();
+</script>
+
+<script>
+	function updateUIVisibility() {
+  const anyVisible = Array.from(document.querySelectorAll('.line-group'))
+    .some(el => el.style.display === 'block');
+
+  const main = document.querySelector('.main');
+  const mouseFollow = document.getElementById('mouse-follow-images');
+  const light = document.getElementById('light');
+
+  if (anyVisible) {
+    // === line-group이 보일 때 ===
+    main.style.display = 'none';
+
+    document.body.style.cursor = 'none'; // 커서 숨기기
+
+    if (mouseFollow) {
+      mouseFollow.style.display = 'block';
+      mouseFollow.style.pointerEvents = 'none';
+    }
+    if (light) {
+      light.style.display = 'block';
+      light.style.pointerEvents = 'none';
+    }
+
+  } else {
+    // === line-group이 안 보일 때 ===
+    main.style.display = 'block';
+
+    document.body.style.cursor = 'default'; // 커서 다시 보이게 하기
+
+    if (mouseFollow) {
+      mouseFollow.style.display = 'none';
+      mouseFollow.style.pointerEvents = 'auto';
+    }
+    if (light) {
+      light.style.display = 'none';
+      light.style.pointerEvents = 'auto';
+    }
+  }
+}
+
+document.querySelectorAll('.list-lines span').forEach(span => {
+  span.addEventListener('click', () => {
+    setTimeout(updateUIVisibility, 10);
+  });
+});
+
+document.querySelectorAll('.panel-close-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    setTimeout(updateUIVisibility, 10);
+  });
+});
+</script>
+
+
 
 
 </body>
